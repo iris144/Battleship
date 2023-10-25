@@ -4,16 +4,19 @@ import java.util.Objects;
 
 public class Fogfield {
 
+    // your property
     private final String[][] field;
 
+    // constructor
     public Fogfield(){
+
         this.field = new String[10][10];
+
     }
 
 
 
     public static void fogfield() {
-
 
         Battlefield battlefield = new Battlefield();
         battlefield.displayField();
@@ -27,11 +30,11 @@ public class Fogfield {
         for (int row = 0; row <= playerCoordinate.row; row++) {
             for (int column = 0; column <= playerCoordinate.column; column++) {
                 field[row][column] = "~";
-                if (Objects.equals(battlefield.field[row][column], "O")) {
+                if (Objects.equals(field[row][column], "O")) {
                     battlefield.field[row][column] = "X";
                     System.out.println("You hit a ship!");
                     System.out.println();
-                } else if (Objects.equals(battlefield.field[playerCoordinate.row][playerCoordinate.column], "~")) {
+                } else if (Objects.equals(field[playerCoordinate.row][playerCoordinate.column], "~")) {
                     battlefield.field[row][column] = "M";
                     System.out.println("You missed!");
                     System.out.println();

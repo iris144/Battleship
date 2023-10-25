@@ -100,8 +100,8 @@ public class Main {
                 continue;
             }
 
-            fogfield.takeShot(battlefield, playerCoordinate);
             Fogfield.fogfield();
+            fogfield.takeShot(battlefield, playerCoordinate);
             battlefield.takeShot(playerCoordinate);
             battlefield.displayField();
         }
