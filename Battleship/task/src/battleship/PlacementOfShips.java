@@ -6,7 +6,7 @@ public class PlacementOfShips {
 
     public static Scanner scanner = new Scanner(System.in);
     // Remember to put isTesting back to false when checking
-    final static boolean isTesting = true;
+    final static boolean isTesting = false;
     final static String[] testInput = new String[] {
             "F3 F7",
             "A1 D1",

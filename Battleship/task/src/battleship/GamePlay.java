@@ -13,13 +13,12 @@ public class GamePlay {
         System.out.println();
         battlefield.displayFogField();
         System.out.println();
-
     }
 
 
 
     public void gamePlay(Battlefield battlefield){
-        while (true) {
+        while (!battlefield.endGame()) {
             System.out.println();
             System.out.println("Take a shot!");
             System.out.println();

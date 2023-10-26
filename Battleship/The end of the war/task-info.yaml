@@ -528,31 +528,6 @@ files:
     
     
     learner_created: true
-  - name: src/battleship/Battleship.java
-    visible: true
-    text: |
-      package battleship;
-      
-      public class Battleship {
-      
-      
-          // property
-          String name;
-          int length;
-      
-          public Battleship(String name){
-              this.name = name;
-      
-              switch (name) {
-                  case ShipType.AIRCRAFT_CARRIER -> length = 5;
-                  case ShipType.BATTLESHIP -> length = 4;
-                  case ShipType.SUBMARINE, ShipType.CRUISER -> length = 3;
-                  case ShipType.DESTROYER -> length = 2;
-      
-              }
-          }
-      }
-    learner_created: true
   - name: src/battleship/GamePlay.java
     visible: true
     text: |
@@ -609,5 +584,8 @@ files:
     visible: true
     learner_created: true
 feedback_link: https://hyperskill.org/learn/step/10597#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Thu, 26 Oct 2023 12:56:02 UTC"
 record: -1
