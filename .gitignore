@@ -1,5 +1,5 @@
 # Project exclude paths
-/.gradle/
+*gradle*
 /Battleship/task/build/
 /Battleship/task/out/
 /Battleship/task/out/production/classes/
@@ -13,3 +13,5 @@
 /Topics/Input streams/Reverse input text/out/production/classes/
 /Topics/Throwing exceptions/Days of the week/out/
 /Topics/Throwing exceptions/Days of the week/out/production/classes/
+.idea*
+/Topics*
