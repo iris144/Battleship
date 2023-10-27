@@ -16,29 +16,73 @@ public class GamePlay {
     }
 
 
-
-    public void gamePlay(Battlefield battlefield){
-        while (!battlefield.endGame()) {
-            System.out.println();
-            System.out.println("Take a shot!");
-            System.out.println();
-            String playerInput = scanner.nextLine();
-            System.out.println();
-            Coordinate playerCoordinate = new Coordinate(playerInput);
-            if (playerCoordinate.row < 0 || playerCoordinate.column < 0 ||
-                    playerCoordinate.row > 9 || playerCoordinate.column > 9) {
-                System.out.println("Error! You entered the wrong coordinates! Try again:");
-            }
-
-
-            battlefield.takeShot(playerCoordinate);
-            battlefield.displayFogField();
-            System.out.println();
-            battlefield.message(playerCoordinate);
-            System.out.println();
-            battlefield.displayField();
+    public void player1 (Battlefield battlefield) {
+        System.out.println();
+        battlefield.displayFogField();
+        System.out.println("---------------------");
+        battlefield.displayField();
+        System.out.println();
+        System.out.println("Player 1, it's your turn:");
+        System.out.println();
+        String playerInput = scanner.nextLine();
+        System.out.println();
+        Coordinate playerCoordinate = new Coordinate(playerInput);
+        if (playerCoordinate.row < 0 || playerCoordinate.column < 0 ||
+                playerCoordinate.row > 9 || playerCoordinate.column > 9) {
+            System.out.println("Error! You entered the wrong coordinates! Try again:");
         }
+
+
+        battlefield.takeShot(playerCoordinate);
+        battlefield.message(playerCoordinate);
+        promptEnterKey();
+        battlefield.displayFogField();
+        System.out.println("---------------------");
+        battlefield.displayField();
+        System.out.println();
+        //battlefield.displayField();
+
     }
 
+    public void player2 (Battlefield battlefield2) {
+        System.out.println();
+        battlefield2.displayFogField();
+        System.out.println("---------------------");
+        battlefield2.displayField();
+        System.out.println();
+        System.out.println("Player 2, it's your turn:");
+        System.out.println();
+        String playerInput = scanner.nextLine();
+        System.out.println();
+        Coordinate playerCoordinate = new Coordinate(playerInput);
+        if (playerCoordinate.row < 0 || playerCoordinate.column < 0 ||
+                playerCoordinate.row > 9 || playerCoordinate.column > 9) {
+            System.out.println("Error! You entered the wrong coordinates! Try again:");
+        }
+
+
+        battlefield2.takeShot(playerCoordinate);
+        battlefield2.message(playerCoordinate);
+        battlefield2.displayFogField();
+        promptEnterKey();
+        System.out.println("---------------------");
+        battlefield2.displayField();
+        System.out.println();
+        //battlefield2.displayField();
+
+    }
+
+    public void gamePlay(Battlefield battlefield, Battlefield battlefield2){
+        while (!battlefield.endGame()) {
+            player1(battlefield);
+            player2(battlefield2);
+        }
+    }
+    public void promptEnterKey(){
+        System.out.println("Press Enter and pass the move to another player");
+        System.out.println("...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
 
 }

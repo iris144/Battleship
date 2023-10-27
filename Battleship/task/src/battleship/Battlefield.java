@@ -95,9 +95,9 @@ public class Battlefield {
         }else if (sinkShip(shotCoordinate)) {
             System.out.println("You sank a ship! Specify a new target:");
         } else if (field[shotCoordinate.row][shotCoordinate.column] == miss) {
-            System.out.println("You missed! Try again:");
+            System.out.println("You missed!");
         } else if (field[shotCoordinate.row][shotCoordinate.column] == hit) {
-            System.out.println("You hit a ship! Try again:");
+            System.out.println("You hit a ship!");
 
         }
     }

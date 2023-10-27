@@ -382,6 +382,364 @@ files:
           }
       }
     learner_created: false
+  - name: src/battleship/GamePlay.java
+    visible: true
+    text: |-
+      package battleship;
+      
+      import java.util.Scanner;
+      public class GamePlay {
+      
+          public static Scanner scanner = new Scanner(System.in);
+      
+          public void gameMessage(Battlefield battlefield) {
+      
+              // The game has started. Let's play
+              System.out.println();
+              System.out.println("The game starts!");
+              System.out.println();
+              battlefield.displayFogField();
+              System.out.println();
+          }
+      
+      
+      
+          public void gamePlay(Battlefield battlefield){
+              while (!battlefield.endGame()) {
+                  System.out.println();
+                  System.out.println("Take a shot!");
+                  System.out.println();
+                  String playerInput = scanner.nextLine();
+                  System.out.println();
+                  Coordinate playerCoordinate = new Coordinate(playerInput);
+                  if (playerCoordinate.row < 0 || playerCoordinate.column < 0 ||
+                          playerCoordinate.row > 9 || playerCoordinate.column > 9) {
+                      System.out.println("Error! You entered the wrong coordinates! Try again:");
+                  }
+      
+      
+                  battlefield.takeShot(playerCoordinate);
+                  battlefield.displayFogField();
+                  System.out.println();
+                  battlefield.message(playerCoordinate);
+                  System.out.println();
+                  battlefield.displayField();
+              }
+          }
+      
+      
+      }
+    learner_created: true
+  - name: src/battleship/Coordinate.java
+    visible: true
+    text: |
+      package battleship;
+      
+      public class Coordinate {
+      
+          int row;
+          int column;
+      
+      
+          public Coordinate(String coordinate) {
+              // now split (A1) to A and 1
+              String Letter = coordinate.substring(0, 1);
+              String Number = coordinate.substring(1);
+              // now lets transform them into readable array integers.
+              row = Letter.charAt(0) - 'A';
+              column = Integer.parseInt(Number) - 1;
+      
+          }
+      }
+    learner_created: true
+  - name: src/battleship/ShipType.java
+    visible: true
+    text: |
+      package battleship;
+      
+      public enum ShipType {
+      AIRCRAFT_CARRIER("Aircraft Carrier", 5),
+      BATTLESHIP("Battleship", 4),
+      SUBMARINE("Submarine", 3),
+      CRUISER("Cruiser", 3),
+      DESTROYER("Destroyer", 2);
+      
+          private final String name;
+          private final int length;
+      
+          ShipType(String name, int length) {
+              this.name = name;
+              this.length = length;
+          }
+      
+          public String getName() {
+              return name;
+          }
+      
+          public int getLength() {
+              return length;
+          }
+      }
+    learner_created: true
+  - name: src/battleship/PlacementOfShips.java
+    visible: true
+    text: |
+      package battleship;
+      
+      import java.util.Scanner;
+      
+      public class PlacementOfShips {
+      
+          public static Scanner scanner = new Scanner(System.in);
+          // Remember to put isTesting back to false when checking
+          final static boolean isTesting = false;
+          final static String[] testInput = new String[] {
+                  "F3 F7",
+                  "A1 D1",
+                  "A8 A10",
+                  "H1 J1",
+                  "J9 J10"
+          };
+      
+      
+          public void placeShips(Battlefield battlefield) {
+      
+              ShipType[] shipArray = new ShipType[]{
+                      ShipType.AIRCRAFT_CARRIER,
+                      ShipType.BATTLESHIP,
+                      ShipType.SUBMARINE,
+                      ShipType.CRUISER,
+                      ShipType.DESTROYER
+              };
+              // asking where to place coordinates
+              for (int i = 0; i < shipArray.length; i++) {
+                  ShipType currentShip = shipArray[i];
+                  System.out.println();
+                  System.out.printf("Enter the coordinates of the %s (%d cells) :", currentShip.getName(), currentShip.getLength());
+                  System.out.println();
+      
+                  // Just to make testing for yourself easier
+                  String userInput;
+                  if (isTesting) {
+                      userInput = testInput[i];
+                  } else {
+                      userInput = scanner.nextLine();
+                  }
+                  System.out.println();
+      
+      
+                  // get the coordinates that user puts in and split that into 2 and put it in your string [].
+                  String[] userCoordinates = userInput.split(" ");
+      
+                  //refer to your coordinate class to get your coordinates
+                  Coordinate firstCoordinate = new Coordinate(userCoordinates[0]);
+                  Coordinate lastCoordinate = new Coordinate(userCoordinates[1]);
+      
+                  // find out if the length of your ships is the same as your coordinates.
+                  Coordinate startCoordinate = firstCoordinate.row <= lastCoordinate.row && firstCoordinate.column <= lastCoordinate.column ? firstCoordinate : lastCoordinate;
+                  Coordinate endCoordinate = firstCoordinate.row >= lastCoordinate.row && firstCoordinate.column >= lastCoordinate.column ? firstCoordinate : lastCoordinate;
+      
+                  int lengthInput = 0;
+                  if (endCoordinate.row == startCoordinate.row) {
+                      lengthInput = (endCoordinate.column - (startCoordinate.column - 1));
+                  } else if (endCoordinate.column == startCoordinate.column) {
+                      lengthInput = (endCoordinate.row - (startCoordinate.row - 1));
+                  }
+      
+                  // find out if your coordinates are places diagonal or not (so row/row has to be the same or
+                  // column/column has te be the same
+                  if (startCoordinate.row != endCoordinate.row && startCoordinate.column != endCoordinate.column) {
+                      i--;
+                      System.out.println("Error! Wrong ship location! Try again");
+                      continue;
+                  } else if (startCoordinate.row < 0 || endCoordinate.row < 0 || startCoordinate.column < 0 ||
+                          endCoordinate.column < 0 || startCoordinate.row > 9 || endCoordinate.row > 9 ||
+                          startCoordinate.column > 9 || endCoordinate.column > 9) {
+                      i--;
+                      System.out.println("Error! Wrong ship location! Try again");
+                      continue;
+                  } else if (currentShip.getLength() != lengthInput) {
+                      i--;
+                      System.out.printf("Error! Wrong length of the %s! Try again:", currentShip.getName());
+                      continue;
+                      // write down if it's too close to another.
+                  } else if (battlefield.touchShip(startCoordinate, endCoordinate)) {
+                      i--;
+                      System.out.println("Error! You placed it too close to another one. Try again:");
+                      continue;
+                  }
+                  battlefield.placeShip(startCoordinate, endCoordinate);
+                  battlefield.displayField();
+      
+              }
+          }
+      }
+    learner_created: true
+  - name: src/battleship/Battlefield.java
+    visible: true
+    text: |+
+      package battleship;
+      
+      public class Battlefield {
+      
+          // this is your property.
+          final char[][] field;
+          private final char wave = '~';
+          private final char ship = 'O';
+          private final char miss = 'M';
+          private final char hit = 'X';
+      
+      
+          // this is my constructor. You define your play field here.
+          public Battlefield() {
+              this.field = new char[10][10];
+      
+              for (int row = 0; row < field.length; row++) {
+                  for (int column = 0; column < field.length; column++) {
+                      field[row][column] = wave;
+                  }
+              }
+          }
+      
+          // let's print out the play field here.
+      
+          public void displayField() {
+              System.out.println("  1 2 3 4 5 6 7 8 9 10");
+              String rowLabels = "ABCDEFGHIJ";
+              for (int row = 0; row < field.length; row++) {
+                  System.out.print(rowLabels.charAt(row) + " ");
+                  for (int column = 0; column < field.length; column++) {
+                      System.out.print(field[row][column] + " ");
+                  }
+                  System.out.println();
+              }
+          }
+      
+      
+          public void displayFogField() {
+              System.out.println("  1 2 3 4 5 6 7 8 9 10");
+              String rowLabels = "ABCDEFGHIJ";
+              for (int row = 0; row < field.length; row++) {
+                  System.out.print(rowLabels.charAt(row) + " ");
+                  for (int column = 0; column < field.length; column++) {
+                      char cell = field[row][column] == ship ? wave : field[row][column];
+                      System.out.print(cell + " ");
+                  }
+                  System.out.println();
+              }
+          }
+      
+      
+          public void placeShip(Coordinate startCoordinate, Coordinate endCoordinate) {
+              for (int row = startCoordinate.row; row <= endCoordinate.row; row++) {
+                  for (int column = startCoordinate.column; column <= endCoordinate.column; column++) {
+                      field[row][column] = ship;
+                  }
+              }
+          }
+      
+      
+          public boolean touchShip(Coordinate startCoordinate, Coordinate endCoordinate) {
+              for (int row = startCoordinate.row; row <= endCoordinate.row; row++) {
+                  int nextRow = Math.min(row + 1, 9);
+                  int previousRow = Math.max(row - 1, 0);
+                  for (int column = startCoordinate.column; column <= endCoordinate.column; column++) {
+                      int nextColumn = Math.min(column + 1, 9);
+                      int previousColumn = Math.max(column - 1, 0);
+                      boolean shipBelow = field[nextRow][column] == ship;
+                      boolean shipAbove = field[previousRow][column] == ship;
+                      boolean shipBefore = field[row][previousColumn] == ship;
+                      boolean shipAfter = field[row][nextColumn] == ship;
+                      if (shipBelow || shipAbove || shipBefore || shipAfter) {
+                          return true;
+                      }
+                  }
+              }
+              return false;
+          }
+      
+      
+          public void takeShot(Coordinate shotCoordinate) {
+              if (field[shotCoordinate.row][shotCoordinate.column] == wave) {
+                  field[shotCoordinate.row][shotCoordinate.column] = miss;
+              } else if(field[shotCoordinate.row][shotCoordinate.column] == ship) {
+                  field[shotCoordinate.row][shotCoordinate.column] = hit;
+              }
+      
+          }
+      
+      
+          public void message(Coordinate shotCoordinate) {
+              if (endGame()) {
+                  System.out.println("You sank the last ship. You won. Congratulations!");
+              }else if (sinkShip(shotCoordinate)) {
+                  System.out.println("You sank a ship! Specify a new target:");
+              } else if (field[shotCoordinate.row][shotCoordinate.column] == miss) {
+                  System.out.println("You missed! Try again:");
+              } else if (field[shotCoordinate.row][shotCoordinate.column] == hit) {
+                  System.out.println("You hit a ship! Try again:");
+      
+              }
+          }
+      
+          public boolean sinkShip(Coordinate shotCoordinate) {
+      
+      
+              for (int i = shotCoordinate.row + 1; i < 10; i++) {
+                  if (field[i][shotCoordinate.column] == wave || field[i][shotCoordinate.column] == miss) break;
+                  else if (field[i][shotCoordinate.column] == ship) {
+                      return false;
+                  }
+              }
+      
+              for (int i = shotCoordinate.row - 1; i > 0; i--) {
+                  if (field[i][shotCoordinate.column] == wave || field[i][shotCoordinate.column] == miss) break;
+                  else if (field[i][shotCoordinate.column] == ship) {
+                      return false;
+                  }
+              }
+      
+              for (int i = shotCoordinate.column + 1; i < 10; i++) {
+                  if (field[shotCoordinate.row][i] == wave || field[shotCoordinate.row][i] == miss) break;
+                  else if (field[shotCoordinate.row][i] == ship) {
+                      return false;
+                  }
+              }
+      
+              for (int i = shotCoordinate.column - 1; i > 0; i--) {
+                  if (field[shotCoordinate.row][i] == wave || field[shotCoordinate.row][i] == miss) break;
+                  else if (field[shotCoordinate.row][i] == ship) {
+                      return false;
+                  }
+              }
+              return true;
+          }
+      
+      
+          public boolean endGame() {
+              for (int row = 0; row < field.length; row++) {
+                  for (int column = 0; column < field.length; column++) {
+                      if(field[row][column] == ship){
+                          return false;
+                      }
+                  }
+              }
+              return true;
+          }
+      }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/10598#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: Execution failed
+  time: "Fri, 27 Oct 2023 12:49:08 UTC"
 record: -1

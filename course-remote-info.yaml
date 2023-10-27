@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/25073/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Thu, 26 Oct 2023 13:13:13 UTC"
+update_date: "Fri, 27 Oct 2023 09:42:57 UTC"
 stages:
   - id: 663
     step: 10594
@@ -72,8 +72,6 @@ topics:
       theory_id: 3507
     - title: Switch statement
       theory_id: 3504
-    - title: Introduction to OOP
-      theory_id: 3614
     - title: Sizes and ranges
       theory_id: 3532
     - title: Type casting
@@ -100,18 +98,20 @@ topics:
       theory_id: 3514
     - title: String
       theory_id: 3523
-    - title: Package
-      theory_id: 3621
     - title: Errors in programs
       theory_id: 3536
     - title: What is an exception
       theory_id: 3497
+    - title: NPE
+      theory_id: 1945
+    - title: Introduction to OOP
+      theory_id: 3614
+    - title: Package
+      theory_id: 3621
     - title: Hierarchy of exceptions
       theory_id: 3570
     - title: Exception handling
       theory_id: 3552
-    - title: NPE
-      theory_id: 1945
     - title: Throwing exceptions
       theory_id: 3553
     - title: Custom exceptions
