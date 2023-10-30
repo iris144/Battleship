@@ -16,9 +16,9 @@ public class GamePlay {
     }
 
 
-    public void player1 (Battlefield battlefield) {
+    public void player1 (Battlefield battlefield, Battlefield battlefield2) {
         System.out.println();
-        battlefield.displayFogField();
+        battlefield2.displayFogField();
         System.out.println("---------------------");
         battlefield.displayField();
         System.out.println();
@@ -33,22 +33,22 @@ public class GamePlay {
         }
 
 
-        battlefield.takeShot(playerCoordinate);
-        battlefield.message(playerCoordinate);
+        battlefield2.takeShot(playerCoordinate);
+        battlefield2.message(playerCoordinate);
         promptEnterKey();
-        battlefield.displayFogField();
-        System.out.println("---------------------");
-        battlefield.displayField();
-        System.out.println();
+        // battlefield.displayFogField();
+        //System.out.println("---------------------");
+        //battlefield.displayField();
+        //System.out.println();
         //battlefield.displayField();
 
     }
 
-    public void player2 (Battlefield battlefield2) {
+    public void player2 (Battlefield battlefield2, Battlefield battlefield) {
         System.out.println();
-        battlefield2.displayFogField();
+        battlefield.displayFogField(); // Should show your own hits/misses on the battlefield of Player 1
         System.out.println("---------------------");
-        battlefield2.displayField();
+        battlefield2.displayField(); // Should show the hits/misses from Player 1
         System.out.println();
         System.out.println("Player 2, it's your turn:");
         System.out.println();
@@ -61,21 +61,21 @@ public class GamePlay {
         }
 
 
-        battlefield2.takeShot(playerCoordinate);
-        battlefield2.message(playerCoordinate);
-        battlefield2.displayFogField();
+        battlefield.takeShot(playerCoordinate); // Shoot at Player 1 battlefield
+        battlefield.message(playerCoordinate);
+        //battlefield2.displayFogField();
         promptEnterKey();
-        System.out.println("---------------------");
-        battlefield2.displayField();
-        System.out.println();
+        //System.out.println("---------------------");
+        //battlefield2.displayField();
+        //System.out.println();
         //battlefield2.displayField();
 
     }
 
     public void gamePlay(Battlefield battlefield, Battlefield battlefield2){
         while (!battlefield.endGame()) {
-            player1(battlefield);
-            player2(battlefield2);
+            player1(battlefield, battlefield2);
+            player2(battlefield2, battlefield);
         }
     }
     public void promptEnterKey(){
