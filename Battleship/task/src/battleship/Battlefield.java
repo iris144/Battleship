@@ -112,7 +112,7 @@ public class Battlefield {
             }
         }
         // Check if there are ships up from you
-        for (int i = shotCoordinate.row - 1; i > 0; i--) {
+        for (int i = shotCoordinate.row - 1; i >= 0; i--) {
             if (field[i][shotCoordinate.column] == wave || field[i][shotCoordinate.column] == miss) break;
             else if (field[i][shotCoordinate.column] == ship) {
                 return false;
@@ -126,7 +126,7 @@ public class Battlefield {
             }
         }
         // Check if there are ships left from you
-        for (int i = shotCoordinate.column - 1; i > 0; i--) {
+        for (int i = shotCoordinate.column - 1; i >= 0; i--) {
             if (field[shotCoordinate.row][i] == wave || field[shotCoordinate.row][i] == miss) break;
             else if (field[shotCoordinate.row][i] == ship) {
                 return false;
